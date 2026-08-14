@@ -1,400 +1,70 @@
-// ════════════════════════════════════════════════════════════
-//  研缽 · 藥品資料檔  （這是你唯一需要編輯的檔案）
-//  每一筆 = 一個藥品，欄位說明：
-//    code  : 醫令代碼
-//    cat   : 分類（腸胃 / 感冒 / 抗生素 / 心臟）
-//    gen   : 學名        brand : 商品名        zh : 中文名
-//    freq  : 常用頻率（TID、BID…）
-//    unit  : 劑量單位，預設「顆」；粉劑或顆粒填「包」
-//    fmin  : 每次「最小」劑量公式，w 代表體重(kg)
-//    fmax  : 每次「最大」劑量公式；若只有單一值，fmax 留成 ""
-//  範例：fmin:"w*25/250" 代表 體重×25÷250；fmin:"w/40" 代表 體重÷40
-//  要新增藥品，複製一段 { ... } 貼在最後、改內容即可。
-// ════════════════════════════════════════════════════════════
-window.DRUGS = [
-  {
-    "code": "TACETM53",
-    "cat": "感冒",
-    "gen": "Acetaminophen 500mg/T",
-    "brand": "Lactam 500mg/Tab",
-    "zh": "利克痛錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "PACETYG",
-    "cat": "感冒",
-    "gen": "Acetylcysteine(粉劑) 200mg/3g/Pack",
-    "brand": "Actein granule 200mg/3g/Pack",
-    "zh": "【粉劑】愛克痰顆粒",
-    "freq": "TID/QID",
-    "unit": "包",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TACYCL4",
-    "cat": "抗生素",
-    "gen": "Acyclovir(錠劑)四百mg/Tab",
-    "brand": "Acylo 400mg/Tab",
-    "zh": "克皰疹錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w*10/400",
-    "fmax": "w*20/400"
-  },
-  {
-    "code": "TAMBROX2",
-    "cat": "感冒",
-    "gen": "Ambroxol HCl 30mg/Tab",
-    "brand": "Ambroxol 30mg/Tab",
-    "zh": "安嗽錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TAMINOP3",
-    "cat": "感冒",
-    "gen": "Aminophylline  100mg/Tab(片裝)",
-    "brand": "Aminophylline  100mg/Tab(片裝)",
-    "zh": "氨基非林錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/60",
-    "fmax": ""
-  },
-  {
-    "code": "TAMOXIC1",
-    "cat": "抗生素",
-    "gen": "Amoxicillin 250mg/Cap",
-    "brand": "Amoxicillin 250mg/Cap",
-    "zh": "安謀黴素膠囊",
-    "freq": "TID",
-    "unit": "顆",
-    "fmin": "w*25/250",
-    "fmax": "w*90/250"
-  },
-  {
-    "code": "TASPI103",
-    "cat": "心臟",
-    "gen": "ASPirin(錠劑非緩釋)  一百mg/Tab",
-    "brand": "ASPirin(錠劑非緩釋)  一百mg/Tab",
-    "zh": "\"強生\"阿斯匹林膜衣錠",
-    "freq": "QD",
-    "unit": "顆",
-    "fmin": "w*1/100",
-    "fmax": "w*5/100"
-  },
-  {
-    "code": "TAZITHR",
-    "cat": "抗生素",
-    "gen": "AZITHROMYCIN(錠劑) 250mg/Tab",
-    "brand": "ZITHROMAX 250mg/Tab",
-    "zh": "日舒",
-    "freq": "QD",
-    "unit": "顆",
-    "fmin": "w*10/250",
-    "fmax": ""
-  },
-  {
-    "code": "TBAKTAR",
-    "cat": "抗生素",
-    "gen": "Baktar 400mg/Tab (複方)",
-    "brand": "Baktar Tab 400mg(複方)",
-    "zh": "撲菌特錠",
-    "freq": "BID",
-    "unit": "顆",
-    "fmin": "w*8/80",
-    "fmax": "w*12/80"
-  },
-  {
-    "code": "TCEFIXI2",
-    "cat": "抗生素",
-    "gen": "Cefixime 100mg/Cap",
-    "brand": "Cefixmycin 100mg/Cap",
-    "zh": "喜復黴素膠囊",
-    "freq": "BID",
-    "unit": "顆",
-    "fmin": "w*7/100",
-    "fmax": "w*9/100"
-  },
-  {
-    "code": "TCEPHR51",
-    "cat": "抗生素",
-    "gen": "CEPHRADINE 五百mg/Cap",
-    "brand": "Lisacef 五百mg/Cap",
-    "zh": "利速復膠囊",
-    "freq": "TID",
-    "unit": "顆",
-    "fmin": "w*25/500",
-    "fmax": "w*75/500"
-  },
-  {
-    "code": "TCETIRI3",
-    "cat": "感冒",
-    "gen": "Cetirizine(錠劑) 10mg/Tab",
-    "brand": "Cetirizine 10mg/Tab",
-    "zh": "杏止敏 膜衣錠",
-    "freq": "QD/BID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TCIPRO5",
-    "cat": "抗生素",
-    "gen": "CIPROfloxacin  500mg/Tab",
-    "brand": "Ciflogen  500mg/Tab",
-    "zh": "喜伏菌膜衣錠 500 毫克",
-    "freq": "BID",
-    "unit": "顆",
-    "fmin": "w*10/500",
-    "fmax": "w*20/500"
-  },
-  {
-    "code": "TCLARI5",
-    "cat": "抗生素",
-    "gen": "Clarithromycin F.C.500mg/Tab",
-    "brand": "Klaricid F.C. 500mg/Tab",
-    "zh": "開羅理黴素膜衣錠",
-    "freq": "BID",
-    "unit": "顆",
-    "fmin": "w*15/500",
-    "fmax": "w*30/500"
-  },
-  {
-    "code": "TCYPRO1",
-    "cat": "腸胃",
-    "gen": "Cyproheptadine HCl 4mg/Tab",
-    "brand": "PILIAN 4mg/Tab",
-    "zh": "佩你安錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/60",
-    "fmax": "w/40"
-  },
-  {
-    "code": "TDIMETH",
-    "cat": "腸胃",
-    "gen": "Dimethyl polysiloxane 40mg/Tab",
-    "brand": "Gaslan 40mg/Tab",
-    "zh": "加斯朗錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": "w/20"
-  },
-  {
-    "code": "TMOTIL",
-    "cat": "腸胃",
-    "gen": "Domperidone(錠劑) 10mg/Tab",
-    "brand": "Emetrol 10mg/Tab",
-    "zh": "癒吐寧錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TDOXYCY2",
-    "cat": "抗生素",
-    "gen": "Doxycycline 100mg/Cap",
-    "brand": "Doxycycline 100mg/Cap",
-    "zh": "獨克士黴素膠囊",
-    "freq": "BID",
-    "unit": "顆",
-    "fmin": "w*2.2/100",
-    "fmax": "w*4.4/100"
-  },
-  {
-    "code": "TFAMOTI5",
-    "cat": "腸胃",
-    "gen": "Famotidine 20mg/Tab",
-    "brand": "Famotidine F.C. 20mg/Tab",
-    "zh": "(啡莫替定)景樂寧膜衣錠",
-    "freq": "BID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TFENOTE1",
-    "cat": "感冒",
-    "gen": "Fenoterol (錠劑) 2.5mg/Tab",
-    "brand": "Asmatin  2.5mg/Tab",
-    "zh": "喘必定錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/60",
-    "fmax": ""
-  },
-  {
-    "code": "TISONIA1",
-    "cat": "抗生素",
-    "gen": "Isoniazid 100mg/Tab",
-    "brand": "Isoniazide 100mg/Tab",
-    "zh": "異菸生僉醯月井錠",
-    "freq": "QD",
-    "unit": "顆",
-    "fmin": "w*10/100",
-    "fmax": ""
-  },
-  {
-    "code": "TLYSOZY",
-    "cat": "感冒",
-    "gen": "Lysozyme 30mg/Tab",
-    "brand": "Lysozyme chloride 30mg/Tab",
-    "zh": "來縮酵素錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TMAG-O",
-    "cat": "腸胃",
-    "gen": "Magnesium Oxide 250mg/Tab",
-    "brand": "Magnesium Oxide 250mg/Tab",
-    "zh": "氧化鎂錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": "w/20"
-  },
-  {
-    "code": "TMETOCL1",
-    "cat": "腸胃",
-    "gen": "Metoclopramide 3.84mg/Tab(片裝",
-    "brand": "Promeran 3.84mg/Tab(片裝)",
-    "zh": "胃明朗膜衣錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TMETRON2",
-    "cat": "抗生素",
-    "gen": "Metronidazole(膠囊) 250mg/Cap",
-    "brand": "Tolizole 250mg/Cap",
-    "zh": "德利治癒膠囊",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w*7.5/250",
-    "fmax": "w*10/250"
-  },
-  {
-    "code": "TMOSAPR1",
-    "cat": "腸胃",
-    "gen": "Mosapride  5mg/Tab",
-    "brand": "Mopride  5mg/Tab",
-    "zh": "摩舒胃清錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TDEXTR1",
-    "cat": "感冒",
-    "gen": "Nospan 30mg/Tab",
-    "brand": "DEXTROmethorphan 30mg/Tab",
-    "zh": "樂咳坦錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TPEACE",
-    "cat": "感冒",
-    "gen": "Peace Tab(複方)",
-    "brand": "Peace Tab",
-    "zh": "鼻福錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TPROPRA",
-    "cat": "心臟",
-    "gen": "Propranolol 10mg/Tab(鋁箔)",
-    "brand": "Propranolol HCl 10 mg/Tab 心律錠",
-    "zh": "心律錠",
-    "freq": "BID/TID",
-    "unit": "顆",
-    "fmin": "w*1/10",
-    "fmax": "w*3/10"
-  },
-  {
-    "code": "TRIFAM31",
-    "cat": "抗生素",
-    "gen": "Rifampicin 300mg/Cap",
-    "brand": "Rifampicin 300mg/Cap",
-    "zh": "立泛黴素膠囊",
-    "freq": "QD",
-    "unit": "顆",
-    "fmin": "w*10/300",
-    "fmax": "w*20/300"
-  },
-  {
-    "code": "TSODICO",
-    "cat": "感冒",
-    "gen": "Sodicon-G Tab(複方)",
-    "brand": "Sodicon-G Tab",
-    "zh": "嗽必康治錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TSTROCA",
-    "cat": "腸胃",
-    "gen": "Strocain Tab(複方)",
-    "brand": "Strocain Tab",
-    "zh": "息痛佳音錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TDEXCHL",
-    "cat": "感冒",
-    "gen": "Tomin 2mg/Tab",
-    "brand": "Dexchlorpheniramine 2mg/Tab",
-    "zh": "妥敏錠",
-    "freq": "TID/QID",
-    "unit": "顆",
-    "fmin": "w/40",
-    "fmax": ""
-  },
-  {
-    "code": "TURSOD2",
-    "cat": "腸胃",
-    "gen": "Ursodeoxycholic Acid 100mg/Tab",
-    "brand": "Genurso 100mg/Tab",
-    "zh": "健膽舒錠",
-    "freq": "TID",
-    "unit": "顆",
-    "fmin": "15*w/100/3",
-    "fmax": ""
-  },
-  {
-    "code": "TVALACI",
-    "cat": "抗生素",
-    "gen": "Valaciclovir 500mg/Tab",
-    "brand": "Valtrex 500mg/Tab",
-    "zh": "袪疹易錠",
-    "freq": "BID/TID",
-    "unit": "顆",
-    "fmin": "w*10/500",
-    "fmax": "w*20/500"
-  }
-];
+# 研缽 · 兒童磨粉劑量查詢
+
+給藥師與藥學實習生用的兒童磨粉劑量查詢工具。輸入病人體重、搜尋藥品加入清單，即算出每次的錠數，並可點開「看推算」顯示 mg/kg 的計算過程，方便教學。
+
+目前內建 35 個磨粉品項。
+
+## 檔案說明
+
+- `index.html`：網頁本體，含畫面與計算邏輯。一般不需要改。
+- `drugs.js`：藥品資料檔。**你唯一需要編輯的檔案**，增修藥品都在這裡。
+- `README.md`：本說明。
+
+## 怎麼新增或修改藥品
+
+打開 `drugs.js`，每個藥品是一段這樣的資料：
+
+```
+{
+  "code": "TAMOXIC1",
+  "cat": "抗生素",
+  "gen": "Amoxicillin 250mg/Cap",
+  "brand": "Amoxicillin 250mg/Cap",
+  "zh": "安謀黴素膠囊",
+  "freq": "TID",
+  "fmin": "w*25/250",
+  "fmax": "w*90/250"
+}
+```
+
+欄位意義：
+
+- `code` 醫令代碼
+- `cat` 分類，只用這四個：腸胃、感冒、抗生素、心臟
+- `gen` 學名
+- `brand` 商品名
+- `zh` 中文名
+- `freq` 常用頻率，例如 TID、BID、QD/BID
+- `unit` 劑量單位，預設「顆」；粉劑或顆粒類（如愛克痰顆粒）填「包」
+- `fmin` 每次最小劑量公式
+- `fmax` 每次最大劑量公式；如果這顆藥只有單一值，`fmax` 留成空字串 `""`
+
+### 公式怎麼寫
+
+跟你在 Excel 裡的寫法一樣，差別只是用小寫 `w` 代表體重（kg），算出來的單位是「顆」。可用的符號有 `+ - * / ( )`。
+
+- Excel 的 `=體重*25/250` 就寫成 `"w*25/250"`
+- Excel 的 `=體重/40` 就寫成 `"w/40"`
+- Excel 的 `=15*體重/100/3` 就寫成 `"15*w/100/3"`
+
+網頁會自動用這個公式計算，並在「看推算」把算式攤開來，體重會自動代入。體重支援小數，18.5 kg 也能算。
+
+### 新增一顆藥
+
+複製任何一段 `{ ... }`，貼在清單最後面（記得每段之間用逗號隔開），改成新藥的內容即可。存檔後重新整理網頁就會出現。
+
+## 怎麼上架給同事用（GitHub Pages）
+
+1. 在 GitHub 建一個新的 repository（可設 Public）。
+2. 把 `index.html`、`drugs.js`、`README.md` 三個檔案上傳進去。
+3. 進 repository 的 Settings → Pages。
+4. Source 選 Deploy from a branch，Branch 選 `main`、資料夾選 `/ (root)`，按 Save。
+5. 等一兩分鐘，頁面會給你一個網址，格式類似 `https://你的帳號.github.io/repository名稱/`。把這個網址給同事就能用。
+
+之後要更新藥品，只要在 GitHub 上編輯 `drugs.js`、commit 儲存，網站會自動更新，同事重新整理就是最新版。你這邊改一次，大家同步。
+
+## 小提醒
+
+- 資料僅供教學與調劑參考，實際處方以醫囑為準。
+- 清單是暫時的，重新整理網頁會清空，這是刻意設計，方便換下一位病人重新算。
+- 幾個已知待你之後檢視的地方：粉劑或顆粒類（如愛克痰顆粒）目前單位仍顯示「顆」，若要改「包」再跟我說；各藥的 mg/kg 係數若要臨床複核，改 `drugs.js` 的公式即可。
