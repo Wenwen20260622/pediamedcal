@@ -127,6 +127,7 @@
 
   footer{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);
     font-size:10px;color:var(--ink-soft);letter-spacing:.6px;line-height:1.8;text-align:center}
+  footer a{color:var(--teal);text-decoration:none;border-bottom:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -172,6 +173,7 @@
 
   <footer>
     資料僅供教學與調劑參考，實際處方以醫囑為準<br>
+    資料來源：<a href="https://ped.cc/" target="_blank" rel="noopener">乖乖手冊 2020 兒童常用藥品簡表（ped.cc）</a><br>
     研缽 · 中國醫藥大學附設醫院藥劑部｜v1.0 · 2026.08 · 賴苓芠 蔡佩青編製
   </footer>
 
@@ -308,23 +310,24 @@
   function cardHtml(d){
     const dv = doseVals(d);
     const u = d.unit || "錠";
+    const per = (d.cat === "抗生素") ? "每天" : "每次";
     const meta = [d.zh, d.brand, d.code].filter(Boolean).join(" · ");
     let doseHtml, scaleHtml="";
     if(!dv){
-      doseHtml = `<span class="dlab">每次</span><span class="dnum na">請先輸入體重</span>
+      doseHtml = `<span class="dlab">${per}</span><span class="dnum na">請先輸入體重</span>
                   <span class="freq">${escapeHtml(d.freq)}</span>`;
     } else if(dv.min===null && dv.max===null){
-      doseHtml = `<span class="dlab">每次</span><span class="dnum na">依醫囑</span>
+      doseHtml = `<span class="dlab">${per}</span><span class="dnum na">依醫囑</span>
                   <span class="freq">${escapeHtml(d.freq)}</span>`;
     } else if(dv.max!==null && dv.min!==null){
       const lo=Math.min(dv.min,dv.max), hi=Math.max(dv.min,dv.max);
-      doseHtml = `<span class="dlab">每次</span>
+      doseHtml = `<span class="dlab">${per}</span>
         <span class="dnum">${fmt(dv.min)}<span class="rangebar">–</span>${fmt(dv.max)}<small> ${u}</small></span>
         <span class="freq">${escapeHtml(d.freq)}</span>`;
       scaleHtml = scale(lo,hi,u);
     } else {
       const only = dv.min!==null ? dv.min : dv.max;
-      doseHtml = `<span class="dlab">每次</span>
+      doseHtml = `<span class="dlab">${per}</span>
         <span class="dnum">${fmt(only)}<small> ${u}</small></span>
         <span class="freq">${escapeHtml(d.freq)}</span>`;
       scaleHtml = scale(only,null,u);
@@ -369,6 +372,8 @@
     const w = fmt(weight);
     const rows = [];
     const u = d.unit || "錠";
+    const isAbx = (d.cat === "抗生素");
+    const perLabel = isAbx ? "每天" : "每次";
     if(dv && (dv.min!==null || dv.max!==null)){
       if(d.fmin && dv.min!==null){
         const label = (d.fmax? '最小 ':'');
@@ -386,7 +391,7 @@
       <span>中文名 <b>${escapeHtml(d.zh)}</b></span>
       <span>醫令 <b>${escapeHtml(d.code)}</b></span>
       <span>科別 <b>${escapeHtml(d.cat)}</b></span></div>`;
-    return `<div class="work"><div class="wt2">每 次 劑 量 推 算</div><div class="eqn">${rows.join("")}</div>${meta}</div>`;
+    return `<div class="work"><div class="wt2">${isAbx?'每 日':'每 次'} 劑 量 推 算</div><div class="eqn">${rows.join("")}</div>${meta}</div>`;
   }
 
   function bindCards(){
