@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>研缽 · 兒童磨粉劑量</title>
+<style>
+  :root{
+    --ink:#23302A; --ink-soft:#4A574F;
+    --paper:#E6E8E0; --card:#F4F5F0;
+    --teal:#1F6E63; --teal-deep:#164E46;
+    --mustard:#C08A1E; --mustard-soft:#EBD9A8;
+    --rust:#A2472C; --line:#C9CDC0; --line-soft:#D9DCD1;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--paper);color:var(--ink);
+    font-family:"Noto Sans CJK TC","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+  body{padding-bottom:40px}
+  .wrap{max-width:430px;margin:0 auto;padding:0 18px}
+  .mono{font-family:"DejaVu Sans Mono","SFMono-Regular",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  .serif{font-family:"Noto Serif CJK TC","Noto Serif TC",serif}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  input{font-family:inherit}
+
+  header{padding:22px 0 14px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--ink)}
+  .mark{width:38px;height:38px;flex:none}
+  .mark svg{width:100%;height:100%;display:block}
+  .title{font-family:"Noto Serif CJK TC","Noto Serif TC",serif;font-weight:900;font-size:27px;letter-spacing:2px;line-height:1}
+  .sub{margin-top:5px;font-size:11px;letter-spacing:2.5px;color:var(--teal);font-weight:500}
+  .sub b{color:var(--mustard);font-weight:700}
+
+  /* weight */
+  .weight{margin-top:18px;background:var(--card);border:1.5px solid var(--ink);border-radius:3px;
+    padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .weight .lab{font-size:11.5px;letter-spacing:3px;color:var(--ink-soft);font-weight:600;flex:none}
+  .wfield{display:flex;align-items:baseline;gap:7px;border-bottom:2px solid var(--teal);padding:2px 2px 3px}
+  #wt{font-family:"DejaVu Sans Mono",monospace;font-size:38px;font-weight:700;line-height:1;color:var(--ink);
+    width:110px;text-align:right;background:transparent;border:none;outline:none;font-variant-numeric:tabular-nums}
+  #wt::placeholder{color:var(--line)}
+  .wunit{font-size:15px;color:var(--ink-soft);letter-spacing:1px}
+
+  /* search */
+  .searchbox{margin-top:16px;position:relative;z-index:20}
+  .search{display:flex;align-items:center;gap:9px;background:var(--card);
+    border:1.5px solid var(--line);border-radius:3px;padding:11px 13px;transition:border-color .15s}
+  .search.act{border-color:var(--teal);border-radius:3px 3px 0 0}
+  .search svg{width:15px;height:15px;flex:none;stroke:var(--ink-soft)}
+  .search.act svg{stroke:var(--teal)}
+  #q{flex:1;border:none;outline:none;background:transparent;font-size:15px;color:var(--ink);letter-spacing:.5px;min-width:0}
+  #q::placeholder{color:var(--ink-soft)}
+  .clr{width:20px;height:20px;flex:none;color:var(--ink-soft);font-size:18px;line-height:0;display:none;
+    align-items:center;justify-content:center}
+  .dropdown{position:absolute;left:0;right:0;top:100%;border:1.5px solid var(--teal);border-top:none;
+    border-radius:0 0 3px 3px;background:var(--card);overflow:hidden;display:none;max-height:340px;overflow-y:auto}
+  .dropdown.show{display:block}
+  .opt{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:11px 13px;border-bottom:1px solid var(--line-soft);width:100%;text-align:left}
+  .opt:last-child{border-bottom:none}
+  .opt .gen{font-size:14.5px;color:var(--ink);font-weight:600;line-height:1.3}
+  .opt .gen mark{background:var(--mustard-soft);color:var(--ink);padding:0 1px;border-radius:2px}
+  .opt .meta2{font-size:11px;color:var(--ink-soft);margin-top:3px;letter-spacing:.4px;line-height:1.3}
+  .opt .rt{flex:none}
+  .add{width:27px;height:27px;border-radius:50%;border:1.5px solid var(--teal);color:var(--teal);
+    font-family:"DejaVu Sans Mono",monospace;font-size:20px;line-height:0;display:flex;align-items:center;justify-content:center}
+  .added{font-size:10.5px;letter-spacing:1px;color:var(--ink-soft);border:1.2px solid var(--line);
+    border-radius:2px;padding:4px 8px;background:var(--paper);white-space:nowrap}
+  .nohit{padding:14px 13px;font-size:13px;color:var(--ink-soft);text-align:center;letter-spacing:.5px}
+
+  /* section labels */
+  .seclab{margin:22px 2px 11px;display:flex;align-items:baseline;justify-content:space-between}
+  .seclab .t{font-size:12px;letter-spacing:3px;color:var(--ink);font-weight:700}
+  .seclab .n{font-family:"DejaVu Sans Mono",monospace;font-size:11px;color:var(--teal)}
+
+  .empty{background:var(--card);border:1.3px dashed var(--line);border-radius:3px;padding:22px 16px;
+    text-align:center;font-size:13px;color:var(--ink-soft);line-height:1.7;letter-spacing:.5px}
+
+  /* drug card */
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:3px;padding:13px 14px 12px;margin-bottom:11px}
+  .chead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .gen{font-family:"Noto Serif CJK TC","Noto Serif TC",serif;font-weight:700;font-size:16px;line-height:1.3;color:var(--ink)}
+  .brand{margin-top:3px;font-size:11px;color:var(--ink-soft);letter-spacing:.4px;line-height:1.4}
+  .rmv{flex:none;width:25px;height:25px;border-radius:50%;border:1.3px solid var(--line);color:var(--ink-soft);
+    font-family:"DejaVu Sans Mono",monospace;font-size:15px;line-height:0;display:flex;align-items:center;justify-content:center}
+
+  .dose{margin-top:12px;display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+  .dlab{font-size:11px;letter-spacing:2px;color:var(--ink-soft);padding-bottom:7px}
+  .dnum{font-family:"DejaVu Sans Mono",monospace;font-weight:700;color:var(--teal-deep);font-size:31px;line-height:.85;font-variant-numeric:tabular-nums}
+  .dnum small{font-size:14px;color:var(--ink-soft);font-weight:400}
+  .dnum .rangebar{color:var(--mustard);padding:0 3px}
+  .dnum.na{color:var(--ink-soft);font-size:18px;font-weight:400}
+  .freq{margin-left:auto;align-self:center;font-family:"DejaVu Sans Mono",monospace;font-size:12.5px;letter-spacing:1px;
+    color:var(--ink);background:var(--mustard-soft);border:1.2px solid var(--mustard);border-radius:2px;padding:4px 9px;white-space:nowrap}
+
+  .scale{margin-top:12px;position:relative;height:24px}
+  .scale .rule{position:absolute;left:0;right:0;top:8px;height:1.5px;background:var(--line)}
+  .scale .tk{position:absolute;top:4px;width:1.5px;height:9px;background:var(--line)}
+  .scale .seg{position:absolute;top:7px;height:3px;background:var(--mustard);border-radius:2px}
+  .scale .pt{position:absolute;top:3px;width:11px;height:11px;border-radius:50%;background:var(--card);
+    border:2.2px solid var(--teal-deep);margin-left:-5.5px}
+  .scale .cap{position:absolute;top:15px;font-family:"DejaVu Sans Mono",monospace;font-size:9px;color:var(--ink-soft)}
+
+  .expand{margin-top:11px;border-top:1px dashed var(--line);padding-top:10px;width:100%;
+    display:flex;align-items:center;gap:6px;font-size:11.5px;letter-spacing:2px;color:var(--teal)}
+  .expand svg{width:11px;height:11px;stroke:var(--teal);transition:transform .2s}
+  .expand.open svg{transform:rotate(180deg)}
+
+  .work{margin-top:11px;border:1.3px solid var(--teal);border-radius:3px;padding:12px 13px;
+    background:radial-gradient(var(--line-soft) 1px, transparent 1px);background-size:13px 13px;background-color:#EEF0EA}
+  .work .wt2{font-size:10px;letter-spacing:2.5px;color:var(--teal-deep);font-weight:700;margin-bottom:8px}
+  .eqn{font-family:"DejaVu Sans Mono",monospace;font-size:13px;color:var(--ink);line-height:1.95}
+  .eqn .rl{color:var(--ink-soft);font-size:11px;margin-right:4px}
+  .eqn u{text-decoration:none;color:var(--mustard);font-weight:700}
+  .eqn .res{color:var(--teal-deep);font-weight:700}
+  .meta{margin-top:9px;font-size:10px;color:var(--ink-soft);letter-spacing:.4px;display:flex;gap:14px;flex-wrap:wrap}
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* browse */
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+  .chip{font-size:12px;letter-spacing:1.5px;padding:6px 13px;border-radius:2px;border:1.3px solid var(--line);color:var(--ink-soft)}
+  .chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .brow{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--card);
+    border:1.3px solid var(--line);border-radius:3px;padding:11px 13px;margin-bottom:8px;width:100%;text-align:left}
+  .brow .g{font-size:14px;color:var(--ink);font-weight:600;line-height:1.3}
+  .brow .z{font-size:10.5px;color:var(--ink-soft);margin-top:2px}
+  .brow .rt{flex:none}
+
+  footer{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);
+    font-size:10px;color:var(--ink-soft);letter-spacing:.6px;line-height:1.8;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mark">
+      <svg viewBox="0 0 40 40" fill="none" stroke="#23302A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 20h22a11 11 0 0 1-22 0z"/><path d="M7 20h26"/>
+        <path d="M24 7 16 18" stroke="#1F6E63" stroke-width="2.2"/>
+        <circle cx="25" cy="6" r="2.4" fill="#C08A1E" stroke="#C08A1E"/>
+      </svg>
+    </div>
+    <div>
+      <div class="title">研缽</div>
+      <div class="sub">兒童磨粉劑量 · <b>每次劑量</b></div>
+    </div>
+  </header>
+
+  <section class="weight">
+    <div class="lab">病 人 體 重</div>
+    <div class="wfield">
+      <input id="wt" type="text" inputmode="decimal" placeholder="0" autocomplete="off">
+      <span class="wunit">kg</span>
+    </div>
+  </section>
+
+  <div class="searchbox">
+    <div class="search" id="searchbar">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="text" placeholder="搜尋學名 / 中文名 / 商品名 / 醫令代碼" autocomplete="off">
+      <button class="clr" id="clr" aria-label="清除">×</button>
+    </div>
+    <div class="dropdown" id="dropdown"></div>
+  </div>
+
+  <div class="seclab"><span class="t">本 次 清 單</span><span class="n" id="listcount">0 項</span></div>
+  <div id="list"></div>
+
+  <div class="seclab"><span class="t">全 部 藥 品</span><span class="n" id="browsecount"></span></div>
+  <div class="chips" id="chips"></div>
+  <div id="browse"></div>
+
+  <footer>
+    資料僅供教學與調劑參考，實際處方以醫囑為準<br>
+    研缽 · 中國醫藥大學附設醫院藥劑部｜v1.0 · 2026.08 · 賴苓芠 蔡佩青編製
+  </footer>
+
+</div>
+
+<script src="drugs.js"></script>
+<script>
+(function(){
+  const DRUGS = (window.DRUGS || []).slice();
+  const CATS = ["全部","腸胃","感冒","抗生素","心臟"];
+  let weight = null;          // kg，可含小數
+  let list = [];              // 已加入的 code 陣列（保順序）
+  let activeCat = "全部";
+  const opened = new Set();   // 展開看推算的 code
+
+  const $ = s => document.querySelector(s);
+  const wtEl = $("#wt"), qEl = $("#q"), clrEl = $("#clr");
+  const barEl = $("#searchbar"), ddEl = $("#dropdown");
+  const listEl = $("#list"), listCountEl = $("#listcount");
+  const browseEl = $("#browse"), browseCountEl = $("#browsecount"), chipsEl = $("#chips");
+
+  const byCode = {};
+  DRUGS.forEach(d => byCode[d.code] = d);
+
+  // ---- helpers ----
+  const norm = s => (s||"").toString().toLowerCase().replace(/\s+/g,"");
+  function fmt(n){
+    if(n===null||n===undefined) return "";
+    const r = Math.round(n*100)/100;
+    return (Math.abs(r-Math.round(r))<1e-9) ? String(Math.round(r)) : String(r);
+  }
+  const FORMULA_OK = /^[0-9w+\-*/(). ]+$/;
+  function evalFormula(expr, w){
+    if(!expr || !FORMULA_OK.test(expr)) return null;
+    try{ const v = Function("w","return ("+expr+");")(w); return (typeof v==="number" && isFinite(v)) ? v : null; }
+    catch(e){ return null; }
+  }
+  function fmtFormula(expr, w){
+    return expr.replace(/\s+/g,"").replace(/\*/g," × ").replace(/\//g," ÷ ").replace(/w/g,'<u>'+w+'</u>');
+  }
+  function doseVals(d){
+    if(weight===null||!(weight>0)) return null;
+    return { min: evalFormula(d.fmin, weight), max: evalFormula(d.fmax, weight) };
+  }
+  function niceMax(v){
+    if(v<=1) return 1;
+    if(v<=2) return 2;
+    return Math.ceil(v/2)*2;
+  }
+  // 模糊比對：子字串優先，其次英數子序列
+  function subseq(hay, q){
+    let i=0; for(const ch of hay){ if(ch===q[i]) i++; if(i===q.length) return true; } return false;
+  }
+  function score(d, q){
+    if(!q) return 0;
+    const fields = [d.gen, d.zh, d.brand, d.code].map(norm);
+    let best = -1;
+    fields.forEach((f,idx)=>{
+      const pos = f.indexOf(q);
+      if(pos===0) best = Math.max(best, 100-idx);
+      else if(pos>0) best = Math.max(best, 60-idx-Math.min(pos,20)*0.5);
+      else if(/^[a-z0-9]+$/.test(q) && subseq(f,q)) best = Math.max(best, 20-idx);
+    });
+    return best;
+  }
+  function highlight(text, q){
+    if(!q) return escapeHtml(text);
+    const lower = text.toLowerCase();
+    const pos = lower.indexOf(q);
+    if(pos<0) return escapeHtml(text);
+    return escapeHtml(text.slice(0,pos))+"<mark>"+escapeHtml(text.slice(pos,pos+q.length))+"</mark>"+escapeHtml(text.slice(pos+q.length));
+  }
+  function escapeHtml(s){ return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+  // ---- weight input ----
+  wtEl.addEventListener("input", ()=>{
+    let v = wtEl.value.replace(/[^\d.]/g,"");
+    const parts = v.split(".");
+    if(parts.length>2) v = parts[0]+"."+parts.slice(1).join("");
+    if(v !== wtEl.value) wtEl.value = v;
+    const n = parseFloat(v);
+    weight = (isFinite(n) && n>0) ? n : null;
+    renderList(); renderBrowse(); renderDropdown();
+  });
+
+  // ---- search ----
+  qEl.addEventListener("input", ()=>{ clrEl.style.display = qEl.value ? "flex":"none"; renderDropdown(); });
+  qEl.addEventListener("focus", ()=>{ if(qEl.value) renderDropdown(); });
+  clrEl.addEventListener("click", ()=>{ qEl.value=""; clrEl.style.display="none"; qEl.focus(); renderDropdown(); });
+  document.addEventListener("click", e=>{ if(!$(".searchbox").contains(e.target)){ ddEl.classList.remove("show"); barEl.classList.remove("act"); }});
+
+  function renderDropdown(){
+    const q = norm(qEl.value);
+    if(!q){ ddEl.classList.remove("show"); barEl.classList.remove("act"); ddEl.innerHTML=""; return; }
+    barEl.classList.add("act");
+    const hits = DRUGS.map(d=>({d,s:score(d,q)})).filter(x=>x.s>0)
+                      .sort((a,b)=>b.s-a.s).slice(0,10);
+    if(!hits.length){ ddEl.innerHTML='<div class="nohit">找不到符合的藥品</div>'; ddEl.classList.add("show"); return; }
+    ddEl.innerHTML = hits.map(({d})=>{
+      const inList = list.includes(d.code);
+      const meta = [d.zh, d.brand, d.code].filter(Boolean).join(" · ");
+      const rt = inList ? '<span class="added">已加入</span>'
+                        : '<span class="add" aria-label="加入">+</span>';
+      return `<button class="opt" data-code="${d.code}" ${inList?'data-in="1"':''}>
+        <span><span class="gen">${highlight(d.gen,q)}</span><span class="meta2">${escapeHtml(meta)}</span></span>
+        <span class="rt">${rt}</span></button>`;
+    }).join("");
+    ddEl.classList.add("show");
+    ddEl.querySelectorAll(".opt").forEach(el=>{
+      el.addEventListener("click", ()=>{ if(!el.dataset.in){ addDrug(el.dataset.code); el.remove(); }});
+    });
+  }
+
+  function addDrug(code){
+    if(!list.includes(code)) list.push(code);
+    renderList(); renderBrowse(); renderDropdown();
+  }
+  function removeDrug(code){
+    list = list.filter(c=>c!==code); opened.delete(code);
+    renderList(); renderBrowse(); renderDropdown();
+  }
+
+  // ---- current list ----
+  function renderList(){
+    listCountEl.textContent = list.length + " 項";
+    if(!list.length){
+      listEl.innerHTML = '<div class="empty">還沒有藥品<br>用上方搜尋，或從下方全部藥品加入</div>';
+      return;
+    }
+    listEl.innerHTML = list.map(code=>cardHtml(byCode[code])).join("");
+    bindCards();
+  }
+
+  function cardHtml(d){
+    const dv = doseVals(d);
+    const u = d.unit || "錠";
+    const meta = [d.zh, d.brand, d.code].filter(Boolean).join(" · ");
+    let doseHtml, scaleHtml="";
+    if(!dv){
+      doseHtml = `<span class="dlab">每次</span><span class="dnum na">請先輸入體重</span>
+                  <span class="freq">${escapeHtml(d.freq)}</span>`;
+    } else if(dv.min===null && dv.max===null){
+      doseHtml = `<span class="dlab">每次</span><span class="dnum na">依醫囑</span>
+                  <span class="freq">${escapeHtml(d.freq)}</span>`;
+    } else if(dv.max!==null && dv.min!==null){
+      const lo=Math.min(dv.min,dv.max), hi=Math.max(dv.min,dv.max);
+      doseHtml = `<span class="dlab">每次</span>
+        <span class="dnum">${fmt(dv.min)}<span class="rangebar">–</span>${fmt(dv.max)}<small> ${u}</small></span>
+        <span class="freq">${escapeHtml(d.freq)}</span>`;
+      scaleHtml = scale(lo,hi,u);
+    } else {
+      const only = dv.min!==null ? dv.min : dv.max;
+      doseHtml = `<span class="dlab">每次</span>
+        <span class="dnum">${fmt(only)}<small> ${u}</small></span>
+        <span class="freq">${escapeHtml(d.freq)}</span>`;
+      scaleHtml = scale(only,null,u);
+    }
+    const isOpen = opened.has(d.code);
+    const workHtml = isOpen ? work(d,dv) : "";
+    const expLabel = isOpen ? "收合" : "看推算";
+    const chevron = isOpen
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m6 15 6-6 6 6"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>';
+    return `<div class="card" data-code="${d.code}">
+      <div class="chead">
+        <div><div class="gen">${escapeHtml(d.gen)}</div><div class="brand">${escapeHtml(meta)}</div></div>
+        <button class="rmv" data-rm="${d.code}" aria-label="移除">×</button>
+      </div>
+      <div class="dose">${doseHtml}</div>
+      ${scaleHtml}
+      ${workHtml}
+      <button class="expand ${isOpen?'open':''}" data-ex="${d.code}">${chevron} ${expLabel}</button>
+    </div>`;
+  }
+
+  function scale(lo,hi,unit){
+    const u = unit || "錠";
+    const top = niceMax(hi!==null?hi:lo);
+    const ticks = [0,.25,.5,.75,1].map(f=>`<div class="tk" style="left:${f*100}%"></div>`).join("");
+    const p = v=>`${Math.max(0,Math.min(100,v/top*100))}%`;
+    let pts, seg="";
+    if(hi!==null && hi!==lo){
+      seg = `<div class="seg" style="left:${p(lo)};right:calc(100% - ${p(hi)})"></div>`;
+      pts = `<div class="pt" style="left:${p(lo)}"></div><div class="pt" style="left:${p(hi)}"></div>`;
+    } else {
+      pts = `<div class="pt" style="left:${p(lo)}"></div>`;
+    }
+    return `<div class="scale"><div class="rule"></div>${ticks}${seg}${pts}
+      <div class="cap" style="left:0%">0</div>
+      <div class="cap" style="left:calc(50% - 4px)">${fmt(top/2)}</div>
+      <div class="cap" style="right:0%">${fmt(top)} ${u}</div></div>`;
+  }
+
+  function work(d,dv){
+    const w = fmt(weight);
+    const rows = [];
+    const u = d.unit || "錠";
+    if(dv && (dv.min!==null || dv.max!==null)){
+      if(d.fmin && dv.min!==null){
+        const label = (d.fmax? '最小 ':'');
+        rows.push(`<div><span class="rl">${label}</span>${fmtFormula(d.fmin,w)} = <span class="res">${fmt(dv.min)} ${u}</span></div>`);
+      }
+      if(d.fmax && dv.max!==null){
+        rows.push(`<div><span class="rl">最大 </span>${fmtFormula(d.fmax,w)} = <span class="res">${fmt(dv.max)} ${u}</span></div>`);
+      }
+    } else if(dv){
+      rows.push('<div style="color:var(--ink-soft)">此藥未設劑量公式，依醫囑</div>');
+    } else {
+      rows.push('<div style="color:var(--ink-soft)">輸入體重後顯示推算</div>');
+    }
+    const meta = `<div class="meta">
+      <span>中文名 <b>${escapeHtml(d.zh)}</b></span>
+      <span>醫令 <b>${escapeHtml(d.code)}</b></span>
+      <span>科別 <b>${escapeHtml(d.cat)}</b></span></div>`;
+    return `<div class="work"><div class="wt2">每 次 劑 量 推 算</div><div class="eqn">${rows.join("")}</div>${meta}</div>`;
+  }
+
+  function bindCards(){
+    listEl.querySelectorAll("[data-rm]").forEach(b=>b.addEventListener("click",()=>removeDrug(b.dataset.rm)));
+    listEl.querySelectorAll("[data-ex]").forEach(b=>b.addEventListener("click",()=>{
+      const c=b.dataset.ex; opened.has(c)?opened.delete(c):opened.add(c); renderList();
+    }));
+  }
+
+  // ---- browse ----
+  function renderChips(){
+    chipsEl.innerHTML = CATS.map(c=>`<button class="chip ${c===activeCat?'on':''}" data-cat="${c}">${c}</button>`).join("");
+    chipsEl.querySelectorAll(".chip").forEach(el=>el.addEventListener("click",()=>{ activeCat=el.dataset.cat; renderChips(); renderBrowse(); }));
+  }
+  function renderBrowse(){
+    browseCountEl.textContent = DRUGS.length + " 項";
+    const rows = DRUGS.filter(d=> activeCat==="全部" || d.cat===activeCat);
+    browseEl.innerHTML = rows.map(d=>{
+      const inList = list.includes(d.code);
+      const rt = inList ? '<span class="added">已加入</span>'
+                        : `<button class="add" data-badd="${d.code}" aria-label="加入">+</button>`;
+      return `<div class="brow"><div><div class="g">${escapeHtml(d.gen)}</div>
+        <div class="z">${escapeHtml([d.zh,d.cat].filter(Boolean).join(" · "))}</div></div>
+        <div class="rt">${rt}</div></div>`;
+    }).join("");
+    browseEl.querySelectorAll("[data-badd]").forEach(b=>b.addEventListener("click",()=>addDrug(b.dataset.badd)));
+  }
+
+  // ---- init ----
+  renderChips(); renderList(); renderBrowse();
+})();
+</script>
+</body>
+</html>
