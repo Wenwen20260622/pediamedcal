@@ -1,15 +1,13 @@
-// ════════════════════════════════════════════════════════════ 
+// ════════════════════════════════════════════════════════════
 //  研缽 · 藥品資料檔  （這是你唯一需要編輯的檔案）
-//  每一筆 = 一個藥品，欄位說明：
-//    code  : 醫令代碼
-//    cat   : 分類（腸胃 / 感冒 / 抗生素 / 心臟）
-//    gen   : 學名        brand : 商品名        zh : 中文名
-//    freq  : 常用頻率（TID、BID…）
-//    unit  : 劑量單位，預設「顆」；粉劑或顆粒填「包」
-//    fmin  : 每次「最小」劑量公式，w 代表體重(kg)
-//    fmax  : 每次「最大」劑量公式；若只有單一值，fmax 留成 ""
-//  範例：fmin:"w*25/250" 代表 體重×25÷250；fmin:"w/40" 代表 體重÷40
-//  要新增藥品，複製一段 { ... } 貼在最後、改內容即可。
+//  欄位：
+//    code 醫令代碼   cat 分類   gen 學名   brand 商品名   zh 中文名
+//    freq 常用頻率（多重用 / 分隔，如 TID/QID）
+//    unit 單位（預設「顆」，粉劑顆粒填「包」）
+//    basis 劑量基準：抗生素 "daily"（每天總量，系統依所選頻率除成每次）；
+//                    其他 "dose"（每次量，直接顯示）
+//    fmin 最小劑量公式（w=體重kg）   fmax 最大劑量公式（無則留 ""）
+//  頻率除數：QD=1、BID=2、TID=3、QID=4
 // ════════════════════════════════════════════════════════════
 window.DRUGS = [
   {
@@ -20,6 +18,7 @@ window.DRUGS = [
     "zh": "利克痛錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -31,6 +30,7 @@ window.DRUGS = [
     "zh": "【粉劑】愛克痰顆粒",
     "freq": "TID/QID",
     "unit": "包",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -42,6 +42,7 @@ window.DRUGS = [
     "zh": "克皰疹錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*10/400",
     "fmax": "w*20/400"
   },
@@ -53,6 +54,7 @@ window.DRUGS = [
     "zh": "安嗽錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -64,6 +66,7 @@ window.DRUGS = [
     "zh": "氨基非林錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/60",
     "fmax": ""
   },
@@ -75,6 +78,7 @@ window.DRUGS = [
     "zh": "安謀黴素膠囊",
     "freq": "TID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*25/250",
     "fmax": "w*90/250"
   },
@@ -86,6 +90,7 @@ window.DRUGS = [
     "zh": "\"強生\"阿斯匹林膜衣錠",
     "freq": "QD",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w*1/100",
     "fmax": "w*5/100"
   },
@@ -97,6 +102,7 @@ window.DRUGS = [
     "zh": "日舒",
     "freq": "QD",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*10/250",
     "fmax": ""
   },
@@ -108,6 +114,7 @@ window.DRUGS = [
     "zh": "撲菌特錠",
     "freq": "BID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*8/80",
     "fmax": "w*12/80"
   },
@@ -119,6 +126,7 @@ window.DRUGS = [
     "zh": "喜復黴素膠囊",
     "freq": "BID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*7/100",
     "fmax": "w*9/100"
   },
@@ -130,6 +138,7 @@ window.DRUGS = [
     "zh": "利速復膠囊",
     "freq": "TID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*25/500",
     "fmax": "w*75/500"
   },
@@ -141,6 +150,7 @@ window.DRUGS = [
     "zh": "杏止敏 膜衣錠",
     "freq": "QD/BID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -152,6 +162,7 @@ window.DRUGS = [
     "zh": "喜伏菌膜衣錠 500 毫克",
     "freq": "BID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*10/500",
     "fmax": "w*20/500"
   },
@@ -163,6 +174,7 @@ window.DRUGS = [
     "zh": "開羅理黴素膜衣錠",
     "freq": "BID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*15/500",
     "fmax": "w*30/500"
   },
@@ -174,6 +186,7 @@ window.DRUGS = [
     "zh": "佩你安錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/60",
     "fmax": "w/40"
   },
@@ -185,6 +198,7 @@ window.DRUGS = [
     "zh": "加斯朗錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": "w/20"
   },
@@ -196,6 +210,7 @@ window.DRUGS = [
     "zh": "癒吐寧錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -207,6 +222,7 @@ window.DRUGS = [
     "zh": "獨克士黴素膠囊",
     "freq": "BID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*2.2/100",
     "fmax": "w*4.4/100"
   },
@@ -218,6 +234,7 @@ window.DRUGS = [
     "zh": "(啡莫替定)景樂寧膜衣錠",
     "freq": "BID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -229,6 +246,7 @@ window.DRUGS = [
     "zh": "喘必定錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/60",
     "fmax": ""
   },
@@ -240,8 +258,21 @@ window.DRUGS = [
     "zh": "異菸生僉醯月井錠",
     "freq": "QD",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*10/100",
     "fmax": ""
+  },
+  {
+    "code": "TKETOTI",
+    "cat": "感冒",
+    "gen": "Ketotifen(膠囊) 1mg/Cap",
+    "brand": "Asumalife 1mg/Cap",
+    "zh": "喘福膠囊",
+    "freq": "BID",
+    "unit": "顆",
+    "basis": "dose",
+    "fmin": "w*0.5/10/2",
+    "fmax": "w*1/10/2"
   },
   {
     "code": "TLYSOZY",
@@ -251,6 +282,7 @@ window.DRUGS = [
     "zh": "來縮酵素錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -262,8 +294,21 @@ window.DRUGS = [
     "zh": "氧化鎂錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": "w/20"
+  },
+  {
+    "code": "TPROCAT",
+    "cat": "感冒",
+    "gen": "Meptin-mini 25mcg/Tab",
+    "brand": "Procaterol 25mcg/Tab",
+    "zh": "滅喘淨微錠",
+    "freq": "BID",
+    "unit": "顆",
+    "basis": "dose",
+    "fmin": "w*0.5/10/2",
+    "fmax": "w*1/10/2"
   },
   {
     "code": "TMETOCL1",
@@ -273,6 +318,7 @@ window.DRUGS = [
     "zh": "胃明朗膜衣錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -284,6 +330,7 @@ window.DRUGS = [
     "zh": "德利治癒膠囊",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*7.5/250",
     "fmax": "w*10/250"
   },
@@ -295,6 +342,7 @@ window.DRUGS = [
     "zh": "摩舒胃清錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -306,6 +354,7 @@ window.DRUGS = [
     "zh": "樂咳坦錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -317,6 +366,7 @@ window.DRUGS = [
     "zh": "鼻福錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -328,8 +378,9 @@ window.DRUGS = [
     "zh": "心律錠",
     "freq": "BID/TID",
     "unit": "顆",
-    "fmin": "w*1/10",
-    "fmax": "w*3/10"
+    "basis": "dose",
+    "fmin": "w*1/10/2",
+    "fmax": "w*3/10/2"
   },
   {
     "code": "TRIFAM31",
@@ -339,6 +390,7 @@ window.DRUGS = [
     "zh": "立泛黴素膠囊",
     "freq": "QD",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*10/300",
     "fmax": "w*20/300"
   },
@@ -350,6 +402,7 @@ window.DRUGS = [
     "zh": "嗽必康治錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -361,6 +414,7 @@ window.DRUGS = [
     "zh": "息痛佳音錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -372,6 +426,7 @@ window.DRUGS = [
     "zh": "妥敏錠",
     "freq": "TID/QID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "w/40",
     "fmax": ""
   },
@@ -383,8 +438,9 @@ window.DRUGS = [
     "zh": "健膽舒錠",
     "freq": "TID",
     "unit": "顆",
+    "basis": "dose",
     "fmin": "15*w/100/3",
-    "fmax": ""
+    "fmax": "w*20/100/3"
   },
   {
     "code": "TVALACI",
@@ -394,6 +450,7 @@ window.DRUGS = [
     "zh": "袪疹易錠",
     "freq": "BID/TID",
     "unit": "顆",
+    "basis": "daily",
     "fmin": "w*10/500",
     "fmax": "w*20/500"
   }
