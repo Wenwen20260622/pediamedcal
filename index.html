@@ -339,8 +339,7 @@
       if(d.fmax&&pMax!=null) rows.push(`<div><span class="rl">最大</span>${fmtF(d.fmax,w)} = <span class="res">${fmt(pMax)} ${u}</span></div>`);
     }
     const title=isAbx?"每 日 → 每 次 推 算":"每 次 劑 量 推 算";
-    const meta=`<div class="meta"><span>中文名 <b>${esc(d.zh)}</b></span><span>醫令 <b>${esc(d.code)}</b></span><span>科別 <b>${esc(d.cat)}</b></span></div>`;
-    return `<div class="work"><div class="wt2">${title}</div><div class="eqn">${rows.join("")}</div>${meta}</div>`;
+    return `<div class="work"><div class="wt2">${title}</div><div class="eqn">${rows.join("")}</div></div>`;
   }
 
   function bindCards(){
