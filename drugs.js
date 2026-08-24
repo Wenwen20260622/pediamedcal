@@ -2,12 +2,10 @@
 //  研缽 · 藥品資料檔  （這是你唯一需要編輯的檔案）
 //  欄位：
 //    code 醫令代碼   cat 分類   gen 學名   brand 商品名   zh 中文名
-//    freq 常用頻率（多重用 / 分隔，如 TID/QID）
+//    freq 頻率標籤（固定單一，如 TID；僅作顯示，不參與計算）
 //    unit 單位（預設「顆」，粉劑顆粒填「包」）
-//    basis 劑量基準：抗生素 "daily"（每天總量，系統依所選頻率除成每次）；
-//                    其他 "dose"（每次量，直接顯示）
-//    fmin 最小劑量公式（w=體重kg）   fmax 最大劑量公式（無則留 ""）
-//  頻率除數：QD=1、BID=2、TID=3、QID=4
+//    basis 一律 "dose"：fmin/fmax 已是「每次」的量，直接顯示
+//    fmin 每次最小劑量公式（w=體重kg）   fmax 每次最大劑量公式（無則留 ""）
 // ════════════════════════════════════════════════════════════
 window.DRUGS = [
   {
@@ -40,9 +38,9 @@ window.DRUGS = [
     "gen": "Acyclovir(錠劑)四百mg/Tab",
     "brand": "Acylo 400mg/Tab",
     "zh": "克皰疹錠",
-    "freq": "TID/QID",
+    "freq": "QID",
     "unit": "顆",
-    "basis": "daily",
+    "basis": "dose",
     "fmin": "w*10/400",
     "fmax": "w*20/400"
   },
@@ -78,9 +76,9 @@ window.DRUGS = [
     "zh": "安謀黴素膠囊",
     "freq": "TID",
     "unit": "顆",
-    "basis": "daily",
-    "fmin": "w*25/250",
-    "fmax": "w*90/250"
+    "basis": "dose",
+    "fmin": "w*25/250/3",
+    "fmax": "w*90/250/3"
   },
   {
     "code": "TASPI103",
@@ -102,7 +100,7 @@ window.DRUGS = [
     "zh": "日舒",
     "freq": "QD",
     "unit": "顆",
-    "basis": "daily",
+    "basis": "dose",
     "fmin": "w*10/250",
     "fmax": ""
   },
@@ -114,9 +112,9 @@ window.DRUGS = [
     "zh": "撲菌特錠",
     "freq": "BID",
     "unit": "顆",
-    "basis": "daily",
-    "fmin": "w*8/80",
-    "fmax": "w*12/80"
+    "basis": "dose",
+    "fmin": "w*8/80/2",
+    "fmax": "w*12/80/2"
   },
   {
     "code": "TCEFIXI2",
@@ -126,9 +124,9 @@ window.DRUGS = [
     "zh": "喜復黴素膠囊",
     "freq": "BID",
     "unit": "顆",
-    "basis": "daily",
-    "fmin": "w*7/100",
-    "fmax": "w*9/100"
+    "basis": "dose",
+    "fmin": "w*7/100/2",
+    "fmax": "w*9/100/2"
   },
   {
     "code": "TCEPHR51",
@@ -138,9 +136,9 @@ window.DRUGS = [
     "zh": "利速復膠囊",
     "freq": "TID",
     "unit": "顆",
-    "basis": "daily",
-    "fmin": "w*25/500",
-    "fmax": "w*75/500"
+    "basis": "dose",
+    "fmin": "w*25/500/3",
+    "fmax": "w*75/500/3"
   },
   {
     "code": "TCETIRI3",
@@ -162,7 +160,7 @@ window.DRUGS = [
     "zh": "喜伏菌膜衣錠 500 毫克",
     "freq": "BID",
     "unit": "顆",
-    "basis": "daily",
+    "basis": "dose",
     "fmin": "w*10/500",
     "fmax": "w*20/500"
   },
@@ -174,9 +172,9 @@ window.DRUGS = [
     "zh": "開羅理黴素膜衣錠",
     "freq": "BID",
     "unit": "顆",
-    "basis": "daily",
-    "fmin": "w*15/500",
-    "fmax": "w*30/500"
+    "basis": "dose",
+    "fmin": "w*15/500/2",
+    "fmax": "w*30/500/2"
   },
   {
     "code": "TCYPRO1",
@@ -222,9 +220,9 @@ window.DRUGS = [
     "zh": "獨克士黴素膠囊",
     "freq": "BID",
     "unit": "顆",
-    "basis": "daily",
-    "fmin": "w*2.2/100",
-    "fmax": "w*4.4/100"
+    "basis": "dose",
+    "fmin": "w*2.2/100/2",
+    "fmax": "w*4.4/100/2"
   },
   {
     "code": "TFAMOTI5",
@@ -258,7 +256,7 @@ window.DRUGS = [
     "zh": "異菸生僉醯月井錠",
     "freq": "QD",
     "unit": "顆",
-    "basis": "daily",
+    "basis": "dose",
     "fmin": "w*10/100",
     "fmax": ""
   },
@@ -328,9 +326,9 @@ window.DRUGS = [
     "gen": "Metronidazole(膠囊) 250mg/Cap",
     "brand": "Tolizole 250mg/Cap",
     "zh": "德利治癒膠囊",
-    "freq": "TID/QID",
+    "freq": "QID",
     "unit": "顆",
-    "basis": "daily",
+    "basis": "dose",
     "fmin": "w*7.5/250",
     "fmax": "w*10/250"
   },
@@ -390,7 +388,7 @@ window.DRUGS = [
     "zh": "立泛黴素膠囊",
     "freq": "QD",
     "unit": "顆",
-    "basis": "daily",
+    "basis": "dose",
     "fmin": "w*10/300",
     "fmax": "w*20/300"
   },
@@ -448,9 +446,9 @@ window.DRUGS = [
     "gen": "Valaciclovir 500mg/Tab",
     "brand": "Valtrex 500mg/Tab",
     "zh": "袪疹易錠",
-    "freq": "BID/TID",
+    "freq": "BID",
     "unit": "顆",
-    "basis": "daily",
+    "basis": "dose",
     "fmin": "w*10/500",
     "fmax": "w*20/500"
   }
