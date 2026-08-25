@@ -129,6 +129,15 @@
   footer{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);
     font-size:10px;color:var(--ink-soft);letter-spacing:.6px;line-height:1.8;text-align:center}
   footer a{color:var(--teal);text-decoration:none;border-bottom:1px solid var(--line)}
+
+  /* 電腦寬螢幕：左右兩欄（手機維持單欄不受影響） */
+  @media (min-width:860px){
+    .wrap{max-width:900px}
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+    .col-left{position:sticky;top:18px}
+    .col-left .weight{margin-top:0}
+    .col-right .seclab:first-child{margin-top:0}
+  }
 </style>
 </head>
 <body>
@@ -148,29 +157,35 @@
     </div>
   </header>
 
-  <section class="weight">
-    <div class="lab">病 人 體 重</div>
-    <div class="wfield">
-      <input id="wt" type="text" inputmode="decimal" placeholder="0" autocomplete="off">
-      <span class="wunit">kg</span>
-    </div>
-  </section>
+  <div class="cols">
+   <div class="col-left">
+    <section class="weight">
+      <div class="lab">病 人 體 重</div>
+      <div class="wfield">
+        <input id="wt" type="text" inputmode="decimal" placeholder="0" autocomplete="off">
+        <span class="wunit">kg</span>
+      </div>
+    </section>
 
-  <div class="searchbox">
-    <div class="search" id="searchbar">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="text" placeholder="搜尋學名 / 中文名 / 商品名 / 醫令代碼" autocomplete="off">
-      <button class="clr" id="clr" aria-label="清除">×</button>
+    <div class="searchbox">
+      <div class="search" id="searchbar">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="text" placeholder="搜尋學名 / 中文名 / 商品名 / 醫令代碼" autocomplete="off">
+        <button class="clr" id="clr" aria-label="清除">×</button>
+      </div>
+      <div class="dropdown" id="dropdown"></div>
     </div>
-    <div class="dropdown" id="dropdown"></div>
+
+    <div class="seclab"><span class="t">本 次 清 單</span><span class="n" id="listcount">0 項</span></div>
+    <div id="list"></div>
+   </div>
+
+   <div class="col-right">
+    <div class="seclab"><span class="t">全 部 藥 品</span><span class="n" id="browsecount"></span></div>
+    <div class="chips" id="chips"></div>
+    <div id="browse"></div>
+   </div>
   </div>
-
-  <div class="seclab"><span class="t">本 次 清 單</span><span class="n" id="listcount">0 項</span></div>
-  <div id="list"></div>
-
-  <div class="seclab"><span class="t">全 部 藥 品</span><span class="n" id="browsecount"></span></div>
-  <div class="chips" id="chips"></div>
-  <div id="browse"></div>
 
   <footer>
     資料僅供教學與調劑參考，實際處方以醫囑為準<br>
